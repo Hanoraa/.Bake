@@ -4488,3 +4488,227 @@ textarea.form-control {
   }
 
 }
+
+/* =====================================================
+   HANORA 2026 — MODERN PRODUCT UI
+   ===================================================== */
+:root{--font-size-base:16.5px;--radius-modern:24px;}
+body{font-size:var(--font-size-base);}
+.product-card.modern-product-card{border-radius:var(--radius-modern);overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;border:1px solid rgba(40,30,35,.07);background:rgba(255,255,255,.96);height:100%;display:flex;flex-direction:column;}
+.product-card.modern-product-card:hover{transform:translateY(-7px);box-shadow:0 24px 60px rgba(42,24,32,.13);}
+.modern-product-card .product-img{height:280px;overflow:hidden;position:relative;background:var(--pink-pale);}
+.modern-product-card .product-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.22,.61,.36,1);}
+.modern-product-card:hover .product-img img{transform:scale(1.045);}
+.modern-product-card .product-body{padding:22px 20px 20px;display:flex;flex-direction:column;flex:1;}
+.modern-product-card .product-category{font-size:.76rem;letter-spacing:.08em;font-weight:800;color:var(--pink);margin-bottom:7px;}
+.modern-product-card .product-body h6{font-size:1.13rem;line-height:1.65;font-weight:800;margin-bottom:9px;min-height:1.85em;}
+.modern-product-card .product-meta{font-size:.94rem;color:var(--gray);display:flex;align-items:center;gap:7px;margin-bottom:12px;}
+.modern-product-card .product-meta i{color:var(--pink);}
+.modern-product-card .product-footer{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;}
+.modern-product-card .product-price{font-size:1.1rem;font-weight:900;color:var(--dark);}
+.modern-product-card .product-price span{font-size:.76rem;color:var(--gray);font-weight:700;}
+.modern-product-card .btn-add{width:100%;border:0;border-radius:14px;margin-top:14px;padding:12px 15px;font-size:.96rem;font-weight:800;background:var(--pink);color:#fff;transition:.25s ease;}
+.modern-product-card .btn-add:hover{background:var(--pink-dark);transform:translateY(-1px);}
+.modern-product-card .flavor-box{margin-top:5px;}
+.product-filters{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:0 auto 35px;}
+.product-filter{border:1px solid rgba(233,30,99,.18);background:rgba(255,255,255,.8);color:var(--dark);border-radius:999px;padding:9px 19px;font-family:inherit;font-size:.94rem;font-weight:700;cursor:pointer;transition:.25s ease;}
+.product-filter:hover,.product-filter.active{background:var(--pink);color:#fff;border-color:var(--pink);box-shadow:0 8px 22px rgba(233,30,99,.18);}
+.modern-products-section{scroll-margin-top:100px;}
+.cakes-section .modern-product-card .product-img{height:320px;}
+.cart-item-modern{display:flex!important;align-items:center;justify-content:space-between;gap:18px;padding:14px 2px!important;border-color:rgba(40,30,35,.07)!important;}
+.cart-item-info{display:flex;align-items:center;gap:12px;min-width:0;}
+.cart-item-info img{width:62px;height:62px;border-radius:14px;object-fit:cover;background:var(--pink-pale);}
+.cart-item-info div{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.cart-item-info strong{font-size:.95rem;}
+.cart-item-info small{color:var(--gray);font-size:.8rem;}
+.cart-item-info span{font-size:.82rem;color:var(--pink);font-weight:800;}
+.cart-controls{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.cart-controls button{width:30px;height:30px;border-radius:9px;border:1px solid rgba(40,30,35,.1);background:#fff;cursor:pointer;font-weight:800;}
+.cart-controls .cart-remove{color:#c62828;border:0;background:transparent;font-size:1rem;margin-right:3px;}
+.cart-total-modern{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding:16px 18px;border-radius:16px;background:var(--pink-pale);font-size:1rem;}
+.cart-total-modern strong{color:var(--pink);font-size:1.1rem;}
+.hanora-toast{position:fixed;z-index:9999;right:24px;bottom:24px;max-width:calc(100vw - 48px);padding:13px 18px;border-radius:15px;background:#1d1b1c;color:#fff;box-shadow:0 16px 45px rgba(0,0,0,.18);font-size:.92rem;font-weight:700;opacity:0;transform:translateY(15px);pointer-events:none;transition:.3s ease;}
+.hanora-toast.show{opacity:1;transform:translateY(0);}
+@media (max-width:991.98px){.modern-product-card .product-img{height:245px}.cakes-section .modern-product-card .product-img{height:270px}.modern-product-card .product-body{padding:19px 17px 17px}.modern-product-card .product-body h6{font-size:1.05rem}}
+@media (max-width:575.98px){body{font-size:16px}.product-filters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding:2px 2px 8px;scrollbar-width:none}.product-filters::-webkit-scrollbar{display:none}.product-filter{white-space:nowrap;padding:8px 16px}.modern-product-card .product-img{height:220px}.cakes-section .modern-product-card .product-img{height:240px}.modern-product-card .product-body{padding:17px 15px 15px}.modern-product-card .product-body h6{font-size:1rem}.modern-product-card .product-meta{font-size:.86rem}.modern-product-card .product-price{font-size:1rem}.cart-item-modern{align-items:flex-start}.cart-controls{gap:5px}.cart-item-info img{width:54px;height:54px}.hanora-toast{right:14px;bottom:14px}}
+
+/* =====================================================
+   HANORA — PRODUCT EXPERIENCE POLISH
+   ===================================================== */
+:root{
+  --hanora-glow:rgba(233,30,99,.14);
+  --hanora-lilac:#f3edff;
+  --hanora-peach:#fff0e9;
+}
+
+.modern-products-section{
+  position:relative;
+  overflow:hidden;
+}
+
+.modern-products-section::before{
+  content:"";
+  position:absolute;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(233,30,99,.09),transparent 68%);
+  top:-90px;
+  right:-90px;
+  pointer-events:none;
+}
+
+.modern-products-section::after{
+  content:"";
+  position:absolute;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(145,108,190,.08),transparent 68%);
+  bottom:-100px;
+  left:-80px;
+  pointer-events:none;
+}
+
+.modern-products-section > .container{
+  position:relative;
+  z-index:1;
+}
+
+.modern-product-card{
+  box-shadow:0 12px 38px rgba(39,24,31,.075);
+}
+
+.modern-product-card .product-img{
+  background:linear-gradient(135deg,#fff1f6,#fff8f4 55%,#f5efff);
+}
+
+.modern-product-card .product-body h6{
+  font-size:1.18rem;
+  letter-spacing:-.01em;
+}
+
+.modern-product-card .product-price{
+  font-size:1.18rem;
+}
+
+.modern-product-card .price-prefix{
+  color:var(--gray);
+  font-size:.78rem;
+  margin-left:3px;
+  font-weight:700;
+}
+
+.modern-product-card .btn-add{
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(233,30,99,.14);
+}
+
+.modern-product-card .btn-add::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.24) 50%,transparent 75%);
+  transform:translateX(-120%);
+  transition:transform .55s ease;
+}
+
+.modern-product-card .btn-add:hover::after{
+  transform:translateX(120%);
+}
+
+.birthday-intro,
+.slice-highlight{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:-10px auto 28px;
+}
+
+.birthday-intro span,
+.slice-highlight span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:9px 15px;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(233,30,99,.12);
+  color:#5f4c54;
+  font-size:.86rem;
+  font-weight:700;
+  box-shadow:0 7px 20px rgba(45,28,35,.045);
+  backdrop-filter:blur(8px);
+}
+
+.birthday-intro i,
+.slice-highlight i{
+  color:var(--pink);
+}
+
+.slice-cakes-section{
+  background:linear-gradient(180deg,rgba(255,249,247,0),rgba(243,237,255,.36),rgba(255,249,247,0));
+}
+
+.slice-cakes-section .modern-product-card{
+  border-color:rgba(145,108,190,.14);
+}
+
+.slice-cakes-section .modern-product-card .product-category{
+  color:#8564a9;
+}
+
+.slice-cakes-section .modern-product-card .product-img{
+  background:linear-gradient(135deg,#f6efff,#fff5f8);
+}
+
+.product-option-box{
+  background:rgba(255,249,251,.75);
+  padding:10px;
+  border-radius:14px;
+  border:1px solid rgba(233,30,99,.08);
+}
+
+.product-option-box .flavor-select{
+  background:#fff;
+}
+
+.empty-products{
+  padding:35px 20px;
+  text-align:center;
+  border-radius:20px;
+  background:rgba(255,255,255,.72);
+  border:1px dashed rgba(233,30,99,.2);
+  color:var(--gray);
+  font-weight:700;
+}
+
+@media (min-width:992px){
+  .cakes-section .modern-product-card .product-img{
+    height:335px;
+  }
+  .slice-cakes-section .modern-product-card .product-img{
+    height:300px;
+  }
+}
+
+@media (max-width:575.98px){
+  .birthday-intro,
+  .slice-highlight{
+    justify-content:flex-start;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding:2px 2px 8px;
+    scrollbar-width:none;
+  }
+  .birthday-intro::-webkit-scrollbar,
+  .slice-highlight::-webkit-scrollbar{display:none}
+  .birthday-intro span,
+  .slice-highlight span{
+    flex:0 0 auto;
+    font-size:.8rem;
+    padding:8px 12px;
+  }
+}
