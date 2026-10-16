@@ -1,0 +1,324 @@
+/* =========================================================
+   HANORA — SIGNATURE UI UPGRADE
+   Load this file AFTER style.css. Keeps existing HTML/classes.
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+  --hanora-ink: #21171d;
+  --hanora-muted: #786d74;
+  --hanora-rose: #e91e63;
+  --hanora-rose-dark: #ad124c;
+  --hanora-blush: #fff0f5;
+  --hanora-lilac: #f3edff;
+  --hanora-glass: rgba(255, 255, 255, .76);
+  --hanora-line: rgba(77, 35, 54, .09);
+  --hanora-shadow: 0 14px 38px rgba(58, 27, 42, .08);
+  --hanora-shadow-lg: 0 28px 70px rgba(58, 27, 42, .15);
+  --hanora-ease: cubic-bezier(.2, .75, .25, 1);
+  --hanora-speed: .35s;
+}
+
+html { scroll-padding-top: 105px; }
+body {
+  color: var(--hanora-ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { color: #fff; background: var(--hanora-rose); }
+:focus-visible {
+  outline: 3px solid rgba(233, 30, 99, .38);
+  outline-offset: 3px;
+}
+a, button, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+a, button, .product-card, .feature-card, .review-card, .modern-product-card {
+  transition:
+    color var(--hanora-speed) var(--hanora-ease),
+    background-color var(--hanora-speed) var(--hanora-ease),
+    border-color var(--hanora-speed) var(--hanora-ease),
+    box-shadow var(--hanora-speed) var(--hanora-ease),
+    transform var(--hanora-speed) var(--hanora-ease);
+}
+img { image-rendering: auto; }
+.container { position: relative; }
+
+/* Subtle ambient light — decorative only, never blocks interaction */
+.hero, .section, .guide-hero, .modern-products-section { isolation: isolate; }
+.hero::before, .hero::after, .guide-hero::before,
+.modern-products-section::before, .modern-products-section::after {
+  z-index: -1;
+}
+.hero::before {
+  background: radial-gradient(circle, rgba(233,30,99,.14), transparent 69%);
+}
+.hero::after {
+  background: radial-gradient(circle, rgba(149,108,190,.11), transparent 69%);
+}
+.hero-glow-one { animation: hanora-pulse 4s ease-in-out infinite; }
+.hero-glow-two { animation: hanora-pulse 5s ease-in-out infinite reverse; }
+
+/* Floating, premium navigation */
+.navbar {
+  border-color: rgba(255,255,255,.78);
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 12px 42px rgba(44, 19, 32, .10);
+  backdrop-filter: blur(24px) saturate(1.35);
+  -webkit-backdrop-filter: blur(24px) saturate(1.35);
+}
+.navbar.scrolled {
+  box-shadow: 0 16px 42px rgba(44, 19, 32, .14);
+  border-color: rgba(233,30,99,.10);
+}
+.logo-symbol, .contact-brand-icon, .footer-logo-img-wrap {
+  transition: transform .45s var(--hanora-ease), filter .45s var(--hanora-ease);
+}
+.hanora-logo:hover .logo-symbol {
+  transform: translateY(-3px) rotate(-4deg);
+  filter: drop-shadow(0 8px 12px rgba(233,30,99,.17));
+}
+.nav-link { position: relative; }
+.nav-link::before {
+  content: "";
+  position: absolute;
+  inset: auto 13px 4px;
+  height: 2px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--hanora-rose), #f4a0bd);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .3s var(--hanora-ease);
+}
+.nav-link:hover::before, .nav-link.active::before { transform: scaleX(1); }
+.nav-shop-btn, .btn-main {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(125deg, #f04482 0%, #e91e63 45%, #b71050 100%);
+  box-shadow: 0 10px 26px rgba(207, 18, 86, .24);
+}
+.nav-shop-btn::after, .btn-main::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.24) 48%, transparent 72%);
+  transform: translateX(-125%);
+  transition: transform .7s var(--hanora-ease);
+}
+.nav-shop-btn:hover::after, .btn-main:hover::after { transform: translateX(125%); }
+.nav-shop-btn:hover, .btn-main:hover {
+  box-shadow: 0 16px 34px rgba(207,18,86,.31);
+}
+
+/* Hero typography and trust details */
+.hero h1 {
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.hero h1 span {
+  background: linear-gradient(115deg, #f04d89, #c2185b 62%, #8d1649);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-badge {
+  box-shadow: 0 10px 30px rgba(233,30,99,.08);
+  backdrop-filter: blur(12px);
+}
+.badge-dot { animation: hanora-pulse 2.5s ease-in-out infinite; }
+.trust-icon {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 7px 18px rgba(233,30,99,.08);
+}
+
+/* Slider: rich glass surface, cleaner product presentation */
+.hero-slider {
+  border: 1px solid rgba(255,255,255,.95);
+  box-shadow: 0 32px 90px rgba(45,22,31,.14), 0 2px 10px rgba(45,22,31,.03);
+  background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(255,248,251,.92));
+}
+.hero-slider::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,.42), transparent 42%, rgba(233,30,99,.025));
+}
+.slide-content { position: relative; }
+.image-circle {
+  background: radial-gradient(circle at 35% 28%, #fff 0%, #fff0f5 54%, #f7dce8 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), 0 18px 45px rgba(233,30,99,.08);
+  animation: hanora-float 7s ease-in-out infinite;
+}
+.slide-image img {
+  filter: drop-shadow(0 28px 24px rgba(54,27,40,.19));
+  transition: filter .4s ease;
+}
+.hero-slide.active .slide-image img { animation: hanora-product-enter .85s var(--hanora-ease) both; }
+.slider-arrow {
+  border-color: rgba(77,35,54,.08);
+  backdrop-filter: blur(12px);
+}
+.slider-dot.active { box-shadow: 0 0 0 4px rgba(233,30,99,.10); }
+
+/* Sections: stronger hierarchy, consistent breathing room */
+.section-header h2, .section-title h2, .contact-form-box h2 {
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.section-eyebrow { letter-spacing: .025em; }
+.section-eyebrow > span {
+  background: linear-gradient(90deg, var(--hanora-rose), #f3a0bd);
+}
+.why-section {
+  background: linear-gradient(135deg, rgba(255,255,255,.48), rgba(255,240,246,.44) 55%, rgba(243,237,255,.35));
+}
+
+/* Product cards */
+.product-card, .modern-product-card {
+  border: 1px solid rgba(255,255,255,.92);
+  box-shadow: var(--hanora-shadow);
+  transform: translateZ(0);
+}
+.product-card:hover, .modern-product-card:hover {
+  border-color: rgba(233,30,99,.19);
+  box-shadow: var(--hanora-shadow-lg);
+  transform: translateY(-8px);
+}
+.product-img {
+  background: linear-gradient(145deg, #fff0f5, #fffaf7 56%, #f3edff);
+}
+.product-img img {
+  transition: transform .8s var(--hanora-ease), filter .8s var(--hanora-ease);
+}
+.product-card:hover .product-img img,
+.modern-product-card:hover .product-img img {
+  transform: scale(1.075);
+}
+.product-overlay {
+  background: linear-gradient(0deg, rgba(31,19,26,.55), transparent 68%);
+}
+.product-overlay span {
+  box-shadow: 0 8px 22px rgba(0,0,0,.13);
+}
+.product-badge {
+  box-shadow: 0 8px 20px rgba(233,30,99,.23);
+}
+.product-body h6 { letter-spacing: -.02em; }
+.product-arrow {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+.product-arrow:hover { transform: translateX(-3px) scale(1.04); }
+
+/* Features and testimonials */
+.feature-card, .review-card {
+  border: 1px solid rgba(255,255,255,.92);
+  background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(255,250,252,.82));
+  box-shadow: var(--hanora-shadow);
+}
+.feature-card::after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  right: -78px;
+  bottom: -82px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(233,30,99,.10), transparent 70%);
+  pointer-events: none;
+  transition: transform .5s var(--hanora-ease);
+}
+.feature-card:hover::after { transform: scale(1.65); }
+.feature-icon {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 24px rgba(233,30,99,.11);
+  transition: transform .4s var(--hanora-ease);
+}
+.feature-card:hover .feature-icon { transform: translateY(-4px) rotate(-4deg); }
+.featured-review {
+  background: linear-gradient(145deg, #fff, #fff4f8);
+  border-color: rgba(233,30,99,.20);
+}
+
+/* Contact form */
+.contact-wrapper {
+  border-color: rgba(255,255,255,.95);
+  box-shadow: 0 30px 85px rgba(40,20,30,.12);
+}
+.form-control {
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.form-control:focus {
+  border-color: rgba(233,30,99,.65);
+  box-shadow: 0 0 0 4px rgba(233,30,99,.09), 0 5px 18px rgba(233,30,99,.04);
+}
+.contact-info-box {
+  background: radial-gradient(circle at 10% 8%, rgba(233,30,99,.20), transparent 35%),
+              linear-gradient(145deg, #2a2027, #171317 76%);
+}
+
+/* Footer and guide pages */
+.footer {
+  background: radial-gradient(ellipse at 85% 0%, rgba(233,30,99,.10), transparent 42%), #171517;
+}
+.footer-social a { transition: all .3s var(--hanora-ease); }
+.footer-social a:hover { box-shadow: 0 8px 22px rgba(233,30,99,.23); }
+.guide-hero {
+  background: radial-gradient(ellipse at 50% 0%, rgba(233,30,99,.06), transparent 58%);
+}
+.birthday-intro span, .slice-highlight span {
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.birthday-intro span:hover, .slice-highlight span:hover {
+  transform: translateY(-2px);
+  border-color: rgba(233,30,99,.22);
+  box-shadow: 0 12px 26px rgba(45,28,35,.08);
+}
+
+/* Entrance motion for existing AOS elements */
+[data-aos] { backface-visibility: hidden; }
+[data-aos="fade-up"] { transform: translate3d(0, 24px, 0); }
+[data-aos="fade-left"] { transform: translate3d(24px, 0, 0); }
+[data-aos="fade-right"] { transform: translate3d(-24px, 0, 0); }
+
+/* Scrollbars, selection and reduced-motion support */
+* { scrollbar-color: rgba(233,30,99,.32) rgba(233,30,99,.05); scrollbar-width: thin; }
+::-webkit-scrollbar { width: 9px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(233,30,99,.04); }
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 99px;
+  background: linear-gradient(180deg, #f17da7, #c2185b) padding-box;
+}
+@keyframes hanora-pulse {
+  0%, 100% { opacity: .72; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.09); }
+}
+@keyframes hanora-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+@keyframes hanora-product-enter {
+  from { opacity: 0; transform: translate3d(-24px, 12px, 0) scale(.91) rotate(-2deg); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0); }
+}
+
+@media (hover: none) {
+  .product-overlay { opacity: 1; }
+  .product-overlay span { transform: none; }
+}
+@media (max-width: 767px) {
+  .navbar { backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+  .hero-slider { box-shadow: 0 22px 55px rgba(45,22,31,.12); }
+  .section-header h2, .section-title h2 { letter-spacing: -.025em; }
+  .product-card:hover, .modern-product-card:hover,
+  .feature-card:hover, .review-card:hover { transform: translateY(-3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
