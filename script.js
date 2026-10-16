@@ -91,13 +91,11 @@ window.addEventListener('DOMContentLoaded',()=>{
 function logout(){localStorage.removeItem('loggedInUser');location.reload();}
 
 /* =====================================================
-   PRODUCTS + CART + EMAILJS
+   PRODUCTS + CART + FORMSUBMIT
    ===================================================== */
 
 const CART_KEY = 'hanoraCart';
-const EMAILJS_PUBLIC_KEY = 'DmbbqZJaC08wVQpvR';
-const EMAILJS_SERVICE_ID = 'service_2owmemf';
-const EMAILJS_TEMPLATE_ID = 'template_4xu77tc';
+const FORMSUBMIT_EMAIL = 'naseriimahdiyar@gmail.com';
 
 const getProducts = () =>
   Array.isArray(window.HANORA_PRODUCTS) ? window.HANORA_PRODUCTS : [];
@@ -393,7 +391,6 @@ function renderCart() {
   if (!totalBox) {
     totalBox = document.createElement('div');
     totalBox.id = 'cartTotal';
-    totalBox.className = 'cart-total-modern';
     list.parentElement.appendChild(totalBox);
   }
 
@@ -450,18 +447,8 @@ async function sendOrderEmail(event) {
     hour: '2-digit', minute: '2-digit'
   });
   const orderNumber = 'HN-' + Date.now().toString().slice(-8);
-
-  const templateParams = {
-    order_number: orderNumber,
-    customer_name: name,
-    customer_phone: phone,
-    customer_email: '',
-    products: orderSummary(),
-    total_items: cart.reduce((sum, i) => sum + i.qty, 0),
-    order_date: orderDate,
-    order_time: orderTime,
-    message: `سفارش جدید حانورا\n\n${orderSummary()}\n\nجمع کل: ${formatPrice(total)} تومان`
-  };
+  const productsText = orderSummary();
+  const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
 
   const original = btn?.innerHTML || 'ثبت سفارش';
   if (btn) {
@@ -471,15 +458,33 @@ async function sendOrderEmail(event) {
   if (msg) msg.textContent = '';
 
   try {
-    if (typeof emailjs === 'undefined') {
-      throw new Error('EmailJS library is not loaded.');
-    }
+    const response = await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: `سفارش جدید حانورا — ${orderNumber}`,
+        _template: 'table',
+        _captcha: 'false',
+        'شماره سفارش': orderNumber,
+        'نام مشتری': name,
+        'شماره تماس': phone,
+        'تاریخ': orderDate,
+        'ساعت': orderTime,
+        'تعداد اقلام': totalItems,
+        'محصولات': productsText,
+        'جمع کل': `${formatPrice(total)} تومان`,
+        'پیام': `سفارش جدید حانورا\n\n${productsText}\n\nجمع کل: ${formatPrice(total)} تومان`
+      })
+    });
 
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      templateParams
-    );
+    const result = await response.json();
+
+    if (!response.ok || result.success === 'false') {
+      throw new Error(result.message || 'ارسال ناموفق بود');
+    }
 
     if (msg) {
       msg.innerHTML = `✅ سفارش شما با موفقیت ثبت شد.<br><small>شماره سفارش: <strong>${escapeHtml(orderNumber)}</strong></small><br><small>به‌زودی با شما تماس می‌گیریم.</small>`;
@@ -491,7 +496,7 @@ async function sendOrderEmail(event) {
     renderCart();
     updateCartCount();
   } catch (error) {
-    console.error('EmailJS ERROR:', error);
+    console.error('FormSubmit ERROR:', error);
     if (msg) {
       msg.innerHTML = '❌ ارسال سفارش انجام نشد.<br><small>لطفاً دوباره تلاش کنید.</small>';
       msg.style.color = '#c62828';
@@ -522,13 +527,6 @@ function showToast(message) {
   window.__hanoraToastTimer = setTimeout(() =>
     toast.classList.remove('show'), 2600);
 }
-
-/* EmailJS initialization */
-window.addEventListener('DOMContentLoaded', () => {
-  if (typeof emailjs !== 'undefined') {
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-  }
-});
 
 /* Render everything */
 window.addEventListener('DOMContentLoaded', () => {
