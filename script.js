@@ -91,11 +91,11 @@ window.addEventListener('DOMContentLoaded',()=>{
 function logout(){localStorage.removeItem('loggedInUser');location.reload();}
 
 /* =====================================================
-   PRODUCTS + CART + FORMSUBMIT
+   PRODUCTS + CART + FORMSPREE
    ===================================================== */
 
 const CART_KEY = 'hanoraCart';
-const FORMSUBMIT_EMAIL = 'naseriimahdiyar@gmail.com';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvkzdvzv';
 
 const getProducts = () =>
   Array.isArray(window.HANORA_PRODUCTS) ? window.HANORA_PRODUCTS : [];
@@ -202,7 +202,6 @@ function renderProducts(filter = 'all') {
   const grid = document.getElementById('productsGrid');
   if (!grid) return;
 
-  // Birthday cakes and cake slices have their own premium sections.
   const list = getProducts().filter(p =>
     p.category !== 'birthday' &&
     p.category !== 'slices' &&
@@ -417,6 +416,10 @@ function orderSummary() {
   }).filter(Boolean).join('\n');
 }
 
+/* =====================================================
+   FORMSPREE — SUBMIT ORDER
+   ===================================================== */
+
 async function sendOrderEmail(event) {
   event?.preventDefault();
 
@@ -425,16 +428,21 @@ async function sendOrderEmail(event) {
   const btn = document.getElementById('submitOrderBtn');
 
   if (!cart.length) {
-    if (msg) msg.textContent = '⚠️ ابتدا حداقل یک محصول به سبد خرید اضافه کنید.';
+    if (msg) {
+      msg.textContent = '⚠️ ابتدا حداقل یک محصول به سبد خرید اضافه کنید.';
+      msg.style.color = '#c62828';
+    }
     return false;
   }
 
   const name = document.getElementById('userName')?.value.trim() || '';
   const phone = document.getElementById('userPhone')?.value.trim() || '';
-  const form = document.getElementById('emailForm');
 
-  if (!name || !phone || !form) {
-    if (msg) msg.textContent = '⚠️ لطفاً نام و شماره تماس را کامل کنید.';
+  if (!name || !phone) {
+    if (msg) {
+      msg.textContent = '⚠️ لطفاً نام و شماره تماس را کامل کنید.';
+      msg.style.color = '#c62828';
+    }
     return false;
   }
 
@@ -450,55 +458,57 @@ async function sendOrderEmail(event) {
   const productsText = orderSummary();
   const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
 
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('phone', phone);
+  formData.append('_subject', `سفارش جدید حانورا — ${orderNumber}`);
+  formData.append('شماره سفارش', orderNumber);
+  formData.append('نام مشتری', name);
+  formData.append('شماره تماس', phone);
+  formData.append('تاریخ', orderDate);
+  formData.append('ساعت', orderTime);
+  formData.append('تعداد اقلام', totalItems);
+  formData.append('محصولات', productsText);
+  formData.append('جمع کل', `${formatPrice(total)} تومان`);
+
   const original = btn?.innerHTML || 'ثبت سفارش';
   if (btn) {
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> در حال ارسال...';
   }
-  if (msg) msg.textContent = '';
+  if (msg) {
+    msg.textContent = '';
+    msg.style.color = '';
+  }
 
   try {
-    const response = await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+    const response = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        _subject: `سفارش جدید حانورا — ${orderNumber}`,
-        _template: 'table',
-        _captcha: 'false',
-        'شماره سفارش': orderNumber,
-        'نام مشتری': name,
-        'شماره تماس': phone,
-        'تاریخ': orderDate,
-        'ساعت': orderTime,
-        'تعداد اقلام': totalItems,
-        'محصولات': productsText,
-        'جمع کل': `${formatPrice(total)} تومان`,
-        'پیام': `سفارش جدید حانورا\n\n${productsText}\n\nجمع کل: ${formatPrice(total)} تومان`
-      })
+      body: formData,
+      headers: { 'Accept': 'application/json' }
     });
 
-    const result = await response.json();
-
-    if (!response.ok || result.success === 'false') {
-      throw new Error(result.message || 'ارسال ناموفق بود');
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData?.errors?.[0]?.message || 'ارسال ناموفق بود');
     }
 
     if (msg) {
-      msg.innerHTML = `✅ سفارش شما با موفقیت ثبت شد.<br><small>شماره سفارش: <strong>${escapeHtml(orderNumber)}</strong></small><br><small>به‌زودی با شما تماس می‌گیریم.</small>`;
+      msg.innerHTML = `✅ سفارش شما با موفقیت ثبت شد.<br>
+        <small>شماره سفارش: <strong>${escapeHtml(orderNumber)}</strong></small><br>
+        <small>به‌زودی با شما تماس می‌گیریم.</small>`;
       msg.style.color = 'var(--pink)';
     }
 
-    form.reset();
+    document.getElementById('emailForm')?.reset();
     saveCart([]);
     renderCart();
     updateCartCount();
+
   } catch (error) {
-    console.error('FormSubmit ERROR:', error);
+    console.error('Formspree ERROR:', error);
     if (msg) {
-      msg.innerHTML = '❌ ارسال سفارش انجام نشد.<br><small>لطفاً دوباره تلاش کنید.</small>';
+      msg.innerHTML = '❌ ارسال سفارش انجام نشد.<br><small>لطفاً دوباره تلاش کنید یا از دایرکت اینستاگرام سفارش دهید.</small>';
       msg.style.color = '#c62828';
     }
   } finally {
@@ -537,6 +547,12 @@ window.addEventListener('DOMContentLoaded', () => {
   setupFilters();
   renderCart();
   updateCartCount();
+
+  // اتصال فرم سفارش به Formspree
+  const orderForm = document.getElementById('emailForm');
+  if (orderForm) {
+    orderForm.addEventListener('submit', sendOrderEmail);
+  }
 });
 
 /* Compatibility with old inline calls */
